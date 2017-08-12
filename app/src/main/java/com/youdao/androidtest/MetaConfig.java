@@ -24,11 +24,11 @@ public class MetaConfig {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        config.mIsDebug = appInfo.metaData.getBoolean("debug", false);
-        config.mCheckBundle = appInfo.metaData.getBoolean("check_bundle", false);
-        config.mIncludeVendorLogo = appInfo.metaData.getBoolean("include_vendor_logo");
-        config.mVendor = appInfo.metaData.getString("vender");
-        config.mUmengChannel = appInfo.metaData.getString("UMENG_CHANNEL");
+            config.mIsDebug = appInfo.metaData.getBoolean("debug", false);
+            config.mCheckBundle = appInfo.metaData.getBoolean("check_bundle", false);
+            config.mVendor = appInfo.metaData.getString("vender");
+            config.mUmengChannel = appInfo.metaData.getString("UMENG_CHANNEL");
+
         return config;
     }
 

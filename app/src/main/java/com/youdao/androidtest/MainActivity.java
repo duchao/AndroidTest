@@ -7,13 +7,11 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
     private MetaConfig metaConfig;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        metaConfig.readFromManifest(this);
-
+        metaConfig = App.getMetaConfig();
         TextView textView = (TextView) findViewById(R.id.unmneg_channle_value);
         textView.setText(metaConfig.mUmengChannel);
         textView = (TextView) findViewById(R.id.vender_value);
