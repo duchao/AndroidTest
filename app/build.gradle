@@ -10,10 +10,70 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        release {
+            storeFile file("../key.properties")
+            storePassword "youdaonote"
+            keyAlias "youdao"
+            keyPassword "youdaonote"
+        }
+    }
+
     buildTypes {
+        debug {
+
+        }
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        baidu {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu",
+                                    VENDER_VALUE: "baidu",
+                                    DEBUG_VALUE: "false",
+                                    BUNDLE_VALUE: "false"]
+        }
+        tencent{
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu",
+                                    VENDER_VALUE: "baidu",
+                                    DEBUG_VALUE: "false",
+                                    BUNDLE_VALUE: "false"]
+        }
+        netease{
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu",
+                                    VENDER_VALUE: "baidu",
+                                    DEBUG_VALUE: "false",
+                                    BUNDLE_VALUE: "false"]
+        }
+        google {
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu",
+                                    VENDER_VALUE: "baidu",
+                                    DEBUG_VALUE: "false",
+                                    BUNDLE_VALUE: "false"]
+        }
+    }
+
+//    productFlavors.all { flavor ->
+//            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+//            flavor.manifestPlaceholders = [VENDER_VALUE: name]
+//            flavor.manifestPlaceholders = [DEBUG_VALUE: "false"]
+//    }
+
+    //修改生成的apk名字
+    applicationVariants.all{ variant->
+        variant.outputs.each { output->
+            if(output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+                if('release'.equals(variant.buildType.name)) {
+                    def  apkFile = new File(output.outputFile.getParent(),
+                            "youdaocorp_android_${variant.versionName}_${variant.flavorName}.apk")
+                    output.outputFile = apkFile
+                }
+            }
         }
     }
 }
