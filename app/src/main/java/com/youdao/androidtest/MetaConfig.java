@@ -26,7 +26,7 @@ public class MetaConfig {
         }
             config.mIsDebug = appInfo.metaData.getBoolean("debug", false);
             config.mCheckBundle = appInfo.metaData.getBoolean("check_bundle", false);
-            config.mVendor = appInfo.metaData.getString("vender");
+            config.mVendor = appInfo.metaData.getString("vendor");
             config.mUmengChannel = appInfo.metaData.getString("UMENG_CHANNEL");
 
         return config;
