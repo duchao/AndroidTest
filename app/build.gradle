@@ -33,36 +33,26 @@ android {
 
     productFlavors {
         baidu {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu",
-                                    VENDER_VALUE: "baidu",
-                                    DEBUG_VALUE: "false",
-                                    BUNDLE_VALUE: "false"]
+            buildConfigField "boolean", "isDebug", "true"
         }
         tencent{
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu",
-                                    VENDER_VALUE: "baidu",
-                                    DEBUG_VALUE: "false",
-                                    BUNDLE_VALUE: "false"]
+            buildConfigField "boolean", "isBundle", "true"
         }
         netease{
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu",
-                                    VENDER_VALUE: "baidu",
-                                    DEBUG_VALUE: "false",
-                                    BUNDLE_VALUE: "false"]
+            buildConfigField "boolean", "isDebug", "true"
+            buildConfigField "boolean", "isBundle", "true"
+
         }
         google {
-            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "baidu",
-                                    VENDER_VALUE: "baidu",
-                                    DEBUG_VALUE: "false",
-                                    BUNDLE_VALUE: "false"]
         }
     }
 
-//    productFlavors.all { flavor ->
-//            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
-//            flavor.manifestPlaceholders = [VENDER_VALUE: name]
-//            flavor.manifestPlaceholders = [DEBUG_VALUE: "false"]
-//    }
+    productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name,
+                                           VENDER_VALUE: name,
+                                           DEBUG_VALUE: flavor.getProperties().get("isDebug","false"),
+                                           BUNDLE_VALUE: flavor.getProperties().get("isBundle","false")]
+    }
 
     //修改生成的apk名字
     applicationVariants.all{ variant->
