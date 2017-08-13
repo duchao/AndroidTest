@@ -21,27 +21,29 @@ android {
     }
 
     buildTypes {
+        // debug 包
         debug {
-            buildConfigField "boolean", "isDebug", "true"
         }
+        // realease 包
         release {
             minifyEnabled false
             signingConfig signingConfigs.releaseConfig
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        // daily 包
+        daily.initWith(buildTypes.release)
+        daily {
+        }
     }
 
     productFlavors {
+        common {
+        }
         baidu {
-            buildConfigField "boolean", "isDebug", "true"
         }
         tencent{
-            buildConfigField "boolean", "isBundle", "true"
         }
         netease{
-            buildConfigField "boolean", "isDebug", "true"
-            buildConfigField "boolean", "isBundle", "true"
-
         }
         google {
         }
@@ -54,6 +56,11 @@ android {
                                        BUNDLE_VALUE       : flavor.getProperties().get("isBundle", "false")]
         def featureFile = file("../feature_config/" + name + ".info")
         def featureMap = [:]
+        if(featureFile != null) {
+            featureFile.splitEachLine("=") { oneLine ->
+                featureMap.put(oneLine[0], oneLine[1])
+            }
+        }
         featureFile.splitEachLine("=") { oneLine ->
                 featureMap.put(oneLine[0], oneLine[1])
         }
@@ -61,20 +68,36 @@ android {
         flavor.buildConfigField("boolean", "isEnableKeyAppUpdate", featureMap.get("key_app_update", "false"))
         flavor.buildConfigField("boolean", "isEnableKeyAd", featureMap.get("key_ad", "false"))
         flavor.buildConfigField("boolean", "isEnableKeySplash", featureMap.get("key_splash", "false"))
+        flavor.buildConfigField("boolean", "isDebug", featureMap.get("is_debug", "false"))
+        flavor.buildConfigField("boolean", "isBundle", featureMap.get("is_bundle", "false"))
+        flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name,
+                                       VENDER_VALUE       : name,
+                                       DEBUG_VALUE        : flavor.getProperties().get("isDebug", "false"),
+                                       BUNDLE_VALUE       : flavor.getProperties().get("isBundle", "false")]
     }
 
     //修改生成的apk名字
     applicationVariants.all{ variant->
+        def buildTime = dailyBuildTime()
         variant.outputs.each { output->
             if(output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
                 if('release'.equals(variant.buildType.name)) {
                     def  apkFile = new File(output.outputFile.getParent(),
                             "youdaocorp_android_${variant.versionName}_${variant.flavorName}.apk")
                     output.outputFile = apkFile
+                } else if ('daily'.equals(variant.buildType.name)) {
+                    def  apkFile = new File(output.outputFile.getParent(),
+                            "youdaocorp_android_${buildTime}_dailybuild.apk")
+                    output.outputFile = apkFile
                 }
             }
         }
+
     }
+}
+
+def dailyBuildTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
 }
 
 dependencies {
