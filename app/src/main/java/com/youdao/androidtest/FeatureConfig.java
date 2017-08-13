@@ -26,13 +26,10 @@ public class FeatureConfig extends Properties {
     }
 
     private void initValue() {
-        if (BuildConfig.DEBUG) {
-        } else {
-            mEnableNOS = BuildConfig.isEnableNos;
-            mAppUpdate = BuildConfig.isEnableKeyAppUpdate;
-            mSplash = BuildConfig.isEnableKeySplash;
-            mAd = BuildConfig.isEnableKeyAd;
-        }
+        mEnableNOS = BuildConfig.isEnableNos;
+        mAppUpdate = BuildConfig.isEnableKeyAppUpdate;
+        mSplash = BuildConfig.isEnableKeySplash;
+        mAd = BuildConfig.isEnableKeyAd;
     }
 
     private void initDefaultValues() {

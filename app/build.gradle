@@ -55,9 +55,7 @@ android {
         def featureFile = file("../feature_config/" + name + ".info")
         def featureMap = [:]
         featureFile.splitEachLine("=") { oneLine ->
-            oneLine.each { value ->
-                featureMap.put(value[0], value[1])
-            }
+                featureMap.put(oneLine[0], oneLine[1])
         }
         flavor.buildConfigField("boolean", "isEnableNos", featureMap.get("enable_nos", "false"))
         flavor.buildConfigField("boolean", "isEnableKeyAppUpdate", featureMap.get("key_app_update", "false"))
